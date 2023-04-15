@@ -1,0 +1,302 @@
+* {
+    padding: 0;
+    margin: 0;
+}
+html {
+    font-size: 62.5%;
+    line-height: 1.6rem;
+    font-family: 'Roboto', sans-serif;
+    box-sizing: border-box;
+    height: 100%;
+}
+body {
+    height: 100%;
+}
+.app {
+    min-height: 100%;
+    position: relative;
+}
+.header{
+    height: 160px;
+    background-color: #4daf54;
+    width: 100%;
+}
+.contact{
+    margin: auto;
+    width: 80%;
+    height: 24px;
+    font-size: 16px;
+    color: #fff;
+    display: flex;
+    justify-content: space-between;
+    padding: 0 8px;
+}
+.nav{
+    margin: auto;
+    width: 80%;
+    height: calc(160px - 24px);
+    font-size: 16px;
+    display: flex;
+    padding: 4px 8px 0
+}
+.social-network {
+    display: flex;
+}
+.social-network > a {
+    padding: 0 4px;
+}
+.login > a{
+    text-decoration: none;
+    color: #fff;
+    padding: 0 4px;
+}
+.login {
+    display: flex;
+}
+.logo {
+    width: 20%;
+    height: 90%;
+
+}
+.logo > a > img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+.manage {
+    width: 20%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+.manage > button {
+    font-size: 16px;
+    height: 50px;
+}
+.search {
+    width: 56%;
+    height: 50px;
+    background-color: #fff;
+    border-radius: 3px;
+    margin: auto;
+    display: flex;
+}
+.manage > button > a {
+    color: #000;
+}
+.manage > button > a:hover {
+    text-decoration: none;
+}
+.search > input {
+    border: none;
+    line-height: 50px;
+    padding: 0 4px;
+    width: 85%;
+    outline: none;
+    border-radius: 3px;
+}
+.btn-find {
+    width: 15%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+.btn-mglass{
+    width: 90px;
+    height: 38px;
+    background-color: #4daf54;
+}
+.books {
+    width: 20%;
+    margin: 12px 4px 0;
+    background-color: #f5f5f5;
+    border-radius: 3px;
+    border: 1px solid #4daf54;
+}
+.book-img {
+    text-align: center;
+    height: 60%;
+}
+.book-img > a > img {
+    width: 100%;
+    height: 100%;
+    border-top-left-radius: 3px;
+    border-top-right-radius: 3px;
+}
+.name-price {
+    padding: 8px;
+}
+.book-name {
+    text-align: center;
+    overflow: hidden;
+    display: block;
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 2;
+    text-overflow: ellipsis;
+}
+.book-price {
+    color: #4daf54;
+    text-align: center;
+    padding: 15px 0 6px;
+}
+.footer {
+    height: 160px;
+    width: 100%;
+}
+.social {
+    width: 100%;
+    height: 60%;
+    background-color: #4daf54;
+    text-align: center;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+.social-icons {
+    width: 70%;
+}
+.social-icons > a {
+    color: #fff;
+    padding: 0 40px;
+}
+.copyright {
+    width: 100%;
+    height: 40%;
+    background-color: #4daf54;
+    border-top: 1px solid #fff;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+.copyright > p {
+    font-size: 16px;
+    color: #fff;
+}
+.copyright > svg {
+    color: #fff;
+    padding-right: 4px;
+    margin-top: -9px;
+}
+.borrowForm {
+    width: 80%;
+    margin: auto;
+    font-size: 16px;
+    padding: 30px 8px 30px;
+}
+.borrowForm-title {
+    height: 20%;
+    border-bottom: 4px solid #4daf54;
+    background-color: #f5f5f5;
+}
+.borrowForm-title > p {
+    padding-left: 8px;
+    color: #4daf54;
+    font-size: 18px;
+    line-height: calc(360px * 20 / 100);
+}
+.borrowForm-register {
+    width: 100%;
+    height: 80%;
+    background-color: #f5f5f5;
+    display: flex;
+}
+.borrowForm-infor {
+    width: 50%;
+    height: 100%;
+    padding-left: 8px;
+}
+.detail-book-infor {
+    width: 60%;
+    margin: 60px 30px;
+}
+.detail-book-infor-name,
+.detail-book-infor-author,
+.detail-book-infor-plc,
+.detail-book-infor-pages,
+.detail-book-infor-rld{
+    padding: 16px 0;
+}
+.borrowForm-infor-customer {
+    width: 50%;
+    height: 100%;
+    background-color: #f5f5f5;
+    padding-left: 8px;
+    font-size: 16px;
+    border-left: 1px solid #4daf54;
+}
+.alert {
+    padding-right: 8px;
+}
+.borrowForm-infor-customer > form {
+    padding: 16px 0;
+    width: 80%;
+    margin: 0 auto;
+}
+.borrowForm-finish {
+    text-align: right;
+    padding: 8px;
+    background-color: #f5f5f5;
+    color: white;
+}
+.form-control {
+    font-size: 16px;
+}
+.btn {
+    font-size: 16px;
+}
+.btn-success {
+    background-color: #4daf54;
+    border-color: #4daf54;
+}
+.modal-register {
+    position: fixed;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    display: none;
+    animation: fadeIn linear 0.3s;
+}
+.modal-overlay {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.4);
+}
+@keyframes growth {
+    from {
+        transform: scale(var(--growth-from));
+    }
+    to {
+        transform: scale(var(--growth-to));    
+    }
+}
+.modal-form {
+    --growth-from: 0.7;
+    --growth-to: 1;
+    
+    position: relative;
+    z-index: 1;
+    animation: growth linear 0.2s;
+    /* transform: translateY(50%); */
+}     
+.modal-form > form {
+    background-color: #f5f5f5;
+    width: 500px;
+    position: absolute;
+    top: 25%;
+    left: 34%;
+    transform: translateY(50%);
+    border-radius: 5px;
+    overflow: hidden;
+    padding: 16px;
+}  
+.btn-register {
+    padding: 4px;
+}      
+.form-group > label {
+    font-size: 16px;
+}  

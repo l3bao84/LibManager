@@ -87,9 +87,9 @@
                         </div>
                     </div>
                     <div class="btn-rent">
-                        <button type="submit" class="btn btn-success">
-                            Mượn sách
-                        </button>
+                        <div class="rbtn btn btn-success">
+                            <a class="set" th:href="@{'/bb/showBorrowForm/' + ${book.getBookID()}}">Mượn sách</a>
+                        </div>
                     </div>
                 </div>
             </div>

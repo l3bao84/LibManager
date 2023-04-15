@@ -45,7 +45,15 @@
             </div>
         </div>
         <div class="book-list">
-            <table class="table">
+            <ul class="nav nav-tabs">
+                <li class="nav-item">
+                  <a class="nav-link show-book-manage active">Quản lý sách</a>
+                </li>
+                <li class="nav-item">
+                  <a class="nav-link show-borrow-manage">Quản lý mượn/trả</a>
+                </li>
+            </ul>    
+            <table class="table table-book-manage">
                 <thead class="thead-dark">
                   <tr>
                     <th scope="col">Mã sách</th>
@@ -77,15 +85,50 @@
                             <div class="act-del">
                                 <form th:action="@{'/books/deleteBook/' + ${book.getBookID()}}"  
                                     method="POST"
-                                    th:onsubmit="return confirm('Bạn có chắc chắn muống xóa sản phẩm này không?') ? true : false">
+                                    th:onsubmit="return confirm('Bạn có chắc chắn muốn xóa sản phẩm này không?') ? true : false">
                                     <input type="submit" class="btn btn-danger style_btn" th:value="Xóa">
                                 </form>
+
                             </div>
                         </div>
                     </td>
                   </tr>
                 </tbody>
-              </table>
+            </table> 
+
+            <table class="table table-borrow-manage close">
+                <thead class="thead-dark">
+                  <tr>
+                    <th scope="col">Mã mượn</th>
+                    <th scope="col">Mã sách</th>
+                    <th scope="col">Ngày mượn</th>
+                    <th scope="col">Ngày trả</th>
+                    <th scope="col">Trạng thái</th>
+                    <th scope="col">Thao tác</th>
+                  </tr>
+                </thead>
+                <tbody th:each="bb : ${bbs}">
+                  <tr>
+                    <td th:text="${bb.getBorrowBookKey().getBorrowID()}"></td>
+                    <td th:text="${bb.getBorrowBookKey().getBookID()}"></td>
+                    <td th:text="${bb.getBorrowDay()}"></td>
+                    <td th:text="${bb.getReturnDay()}"></td>
+                    <td th:text="${bb.getStatus()}"></td>
+                    <td>
+                        <div class="act">
+                            <div class="act-del">
+                                <form th:action="@{'/bb/return/' + ${bb.getBorrowBookKey().getBorrowID()}}"  
+                                    method="POST"
+                                    th:onsubmit="return confirm('Trả cuốn sách này?') ? true : false">
+                                    <input type="submit" class="btn btn-danger style_btn" th:value="Trả">
+                                </form>
+                                <!-- <a th:href="@{'/bb/return/' + ${bb.getBorrowBookKey()}}" class="btn btn-danger style_btn">Trả sách</a> -->
+                            </div>
+                        </div>
+                    </td>
+                  </tr>
+                </tbody>
+            </table> 
         </div>
         <div class="footer">
             <div class="social">
@@ -130,6 +173,26 @@
                 element.innerHTML = VND.format(element.textContent)
             });
         }
+
+        var bookManage = document.querySelector('.show-book-manage')
+        var borrowManage = document.querySelector('.show-borrow-manage')
+        var tableBook = document.querySelector('.table-book-manage')
+        var tableBorrow = document.querySelector('.table-borrow-manage')
+
+        bookManage.addEventListener("click", () => {
+            bookManage.classList.add("active")
+            borrowManage.classList.remove("active")
+            tableBook.classList.remove("close")
+            tableBorrow.classList.add("close")
+        })
+
+        borrowManage.addEventListener("click", () => {
+            borrowManage.classList.add("active")
+            bookManage.classList.remove("active")
+            tableBook.classList.add("close")
+            tableBorrow.classList.remove("close")
+        })
+
     </script>
 </body>
 </html>

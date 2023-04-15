@@ -1,18 +1,24 @@
 package com.example.LibManager.models;
 
 import com.example.LibManager.repositories.AuthorRepository;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
+import lombok.Getter;
+import lombok.Setter;
 import org.hibernate.annotations.GenericGenerator;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.Date;
+import java.util.Set;
 
 @Entity
 @Table(name = "book")
+@Getter
+@Setter
 public class Book {
 
     @Id
@@ -64,6 +70,10 @@ public class Book {
     @Column(name = "categoryID")
     private String categoryID;
 
+    @OneToMany(mappedBy = "book",fetch = FetchType.LAZY)
+    @JsonManagedReference
+    private Set<Borrow_Book> borrow_books;
+
     public Book(){}
 
 
@@ -79,75 +89,4 @@ public class Book {
         this.categoryID = categoryID;
     }
 
-    public String getBookID() {
-        return bookID;
-    }
-
-    public void setBookID(String bookID) {
-        this.bookID = bookID;
-    }
-
-    public String getBookName() {
-        return bookName;
-    }
-
-    public void setBookName(String bookName) {
-        this.bookName = bookName;
-    }
-
-    public double getBookPrice() {
-        return bookPrice;
-    }
-
-    public void setBookPrice(double bookPrice) {
-        this.bookPrice = bookPrice;
-    }
-
-    public String getAuthorID() {
-        return authorID;
-    }
-
-    public void setAuthorID(String authorID) {
-        this.authorID = authorID;
-    }
-
-    public String getReleasedDay() {
-        return releasedDay;
-    }
-
-    public void setReleasedDay(String releasedDay) {
-        this.releasedDay = releasedDay;
-    }
-
-    public String getPlCompanyID() {
-        return plCompanyID;
-    }
-
-    public void setPlCompanyID(String plCompanyID) {
-        this.plCompanyID = plCompanyID;
-    }
-
-    public int getPageNumber() {
-        return pageNumber;
-    }
-
-    public void setPageNumber(int pageNumber) {
-        this.pageNumber = pageNumber;
-    }
-
-    public String getBookImg() {
-        return bookImg;
-    }
-
-    public void setBookImg(String bookImg) {
-        this.bookImg = bookImg;
-    }
-
-    public String getCategoryID() {
-        return categoryID;
-    }
-
-    public void setCategoryID(String categoryID) {
-        this.categoryID = categoryID;
-    }
 }

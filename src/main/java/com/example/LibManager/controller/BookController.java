@@ -2,11 +2,9 @@ package com.example.LibManager.controller;
 
 import com.example.LibManager.models.Author;
 import com.example.LibManager.models.Book;
+import com.example.LibManager.models.Borrow_Book;
 import com.example.LibManager.models.PlCompany;
-import com.example.LibManager.repositories.AuthorRepository;
-import com.example.LibManager.repositories.BookRepository;
-import com.example.LibManager.repositories.CategoryRepository;
-import com.example.LibManager.repositories.PlCompanyRepository;
+import com.example.LibManager.repositories.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
@@ -31,6 +29,9 @@ public class BookController {
     @Autowired
     private BookRepository bookRepository;
 
+    @Autowired
+    private Borrow_BookRepository bBRepository;
+
     @RequestMapping(path = "/detailBook/{bookID}", method = RequestMethod.GET)
     public String getDetailBook(ModelMap modelMap, @PathVariable String bookID) {
         Book book = bookRepository.findById(bookID).get();
@@ -44,6 +45,7 @@ public class BookController {
     @RequestMapping(path = "/manageBook", method = RequestMethod.GET)
     public String manageBook(ModelMap modelMap) {
         modelMap.addAttribute("books", bookRepository.findAll());
+        modelMap.addAttribute("bbs", bBRepository.findAll());
         return "manageBook";
     }
 
@@ -51,10 +53,10 @@ public class BookController {
     public String deleteBook(@PathVariable String bookID, ModelMap modelMap) {
         try{
             bookRepository.deleteById(bookID);
-            return "redirect:/books/manageBook";
+            return "manageBook";
         }catch (Exception ex) {
             modelMap.addAttribute("error", ex.toString());
-            return "redirect:/books/manageBook";
+            return "manageBook";
         }
     }
 
@@ -115,7 +117,8 @@ public class BookController {
                              BindingResult bindingResult) {
         if(bindingResult.hasErrors() == true) {
             modelMap.addAttribute("books", bookRepository.findAll());
-            return "redirect:/books/manageBook";
+            modelMap.addAttribute("bbs", bBRepository.findAll());
+            return "manageBook";
         }else {
             try {
                 if (getAuthorIDByName(book.getAuthorID()) == "") {
@@ -136,7 +139,7 @@ public class BookController {
                     book.setPlCompanyID(getPlCompanyIDByName(book.getPlCompanyID()));
                 }
                 bookRepository.save(book);
-                return "redirect:/books/manageBook";
+                return "manageBook";
             } catch (Exception ex) {
                 modelMap.addAttribute("error", ex.toString());
                 return "insertBook";
@@ -159,9 +162,7 @@ public class BookController {
                              @PathVariable String bookID,
                              @Valid @ModelAttribute("book") Book book,
                              BindingResult bindingResult) {
-        boolean hasfault = false;
         if(bindingResult.hasErrors()) {
-            hasfault = true;
             return "updateBookForm";
         }else {
             try {
@@ -178,9 +179,7 @@ public class BookController {
                     foundBook.setPlCompanyID(getPlCompanyIDByName(book.getPlCompanyID()));
                     bookRepository.save(foundBook);
                     modelMap.addAttribute("books", bookRepository.findAll());
-                    modelMap.addAttribute("hasfault", hasfault);
-                    System.out.println(hasfault);
-                    return "redirect:/books/manageBook";
+                    return "manageBook";
                 }
             }catch (Exception ex) {
                 modelMap.addAttribute("error", ex.toString());
@@ -188,7 +187,8 @@ public class BookController {
             }
         }
         modelMap.addAttribute("books", bookRepository.findAll());
-        return "redirect:/books/manageBook";
+        modelMap.addAttribute("bbs", bBRepository.findAll());
+        return "manageBook";
     }
 
     @RequestMapping(path = "/getBooksByCategoryID/{categoryID}", method = RequestMethod.GET)
@@ -197,4 +197,5 @@ public class BookController {
         modelMap.addAttribute("books", bookRepository.findByCategoryID(categoryID));
         return "bookOnCat";
     }
+
 }

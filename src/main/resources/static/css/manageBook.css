@@ -151,6 +151,14 @@ body {
     padding: 30px 8px 30px;
     font-size: 16px;
 }
+.book-list > ul {
+    height: 20%;
+    padding: 0 0 8px;
+    width: 100%;
+}   
+.nav-link {
+    cursor: pointer;
+}
 .table {
     background-color: #f5f5f5;
     text-align: center;
@@ -159,7 +167,6 @@ body {
     background-color: #4daf54;
     border-color: #4daf54;
 }
-
 .act {
     display: flex;
     align-items: center;
@@ -169,6 +176,9 @@ body {
     font-size: 14px;
 }
 .act-del > form > input {
+    font-size: 14px;
+}
+.act-del > a {
     font-size: 14px;
 }
 .error{
@@ -190,4 +200,7 @@ body {
 }
 .book-name-header {
     width: 26%;
+}
+.close {
+    display: none;
 }

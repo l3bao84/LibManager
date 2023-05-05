@@ -101,7 +101,7 @@ public class CustomerController {
             modelMap.addAttribute("plc", plCompanyRepository.findById(book.getPlCompanyID()).get());
             modelMap.addAttribute("book", book);
             modelMap.addAttribute("customer", customer);
-            return "redirect://borrowForm";
+            return "borrowForm";
         }
     }
 }

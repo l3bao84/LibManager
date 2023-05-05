@@ -2,9 +2,8 @@ package com.example.LibManager.controller;
 
 import com.example.LibManager.models.*;
 import com.example.LibManager.repositories.*;
-import jakarta.servlet.http.HttpServletRequest;
-import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.MediaType;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.validation.BindingResult;
@@ -12,7 +11,6 @@ import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDate;
 import java.util.HashSet;
-import java.util.Optional;
 import java.util.Set;
 
 @Controller
@@ -91,5 +89,4 @@ public class Borrow_BookController {
         modelMap.addAttribute("bbs", bbRepository.findAll());
         return "manageBook";
     }
-
 }

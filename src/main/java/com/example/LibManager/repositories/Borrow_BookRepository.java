@@ -11,5 +11,5 @@ import org.springframework.data.repository.query.Param;
 import java.util.Optional;
 
 public interface Borrow_BookRepository extends JpaRepository<Borrow_Book, String> {
-
+    Optional<Borrow_Book> findByBorrowBookKey(BorrowBookKey borrowBookKey);
 }

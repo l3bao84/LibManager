@@ -53,6 +53,8 @@ public class BookController {
     public String deleteBook(@PathVariable String bookID, ModelMap modelMap) {
         try{
             bookRepository.deleteById(bookID);
+            modelMap.addAttribute("books", bookRepository.findAll());
+            modelMap.addAttribute("bbs", bBRepository.findAll());
             return "manageBook";
         }catch (Exception ex) {
             modelMap.addAttribute("error", ex.toString());

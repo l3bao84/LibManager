@@ -1,0 +1,33 @@
+* {
+    padding: 0;
+    margin: 0;
+}
+html {
+    font-family: 'Roboto', sans-serif;
+    box-sizing: border-box;
+    height: 100%;
+}
+body {
+    background-color: #4daf54;
+    width: 100vw;
+	height: 100vh;
+}
+.btn-color{
+    background-color: #0e1c36;
+    color: #fff;
+    
+  }
+  
+  .profile-image-pic{
+    height: 200px;
+    width: 200px;
+    object-fit: cover;
+  }
+
+.cardbody-color{
+    background-color: #ebf2fa;
+}
+  
+a {
+    text-decoration: none;
+}

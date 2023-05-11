@@ -4,6 +4,8 @@ import com.example.LibManager.models.Book;
 import com.example.LibManager.models.BookDTO;
 import com.example.LibManager.repositories.BookRepository;
 import com.example.LibManager.repositories.CategoryRepository;
+import com.example.LibManager.services.VNCharacterUtils;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
@@ -14,15 +16,14 @@ import java.util.Optional;
 
 @Controller
 @RequestMapping(path = "main")
+@RequiredArgsConstructor
 public class HomeController {
 
-    @Autowired
-    private CategoryRepository categoryRepository;
+    private final CategoryRepository categoryRepository;
 
-    @Autowired
-    private BookRepository bookRepository;
+    private final BookRepository bookRepository;
 
-    @RequestMapping(value = "", method = RequestMethod.GET)
+    @GetMapping("")
     public String homePage(ModelMap modelMap) {
         modelMap.addAttribute("categories", categoryRepository.findAll());
         modelMap.addAttribute("books", bookRepository.findAll());
@@ -32,11 +33,15 @@ public class HomeController {
 
     @PostMapping("/search")
     public String search(ModelMap modelMap,@ModelAttribute("bookDTO") BookDTO bookDTO) {
-        String keyword = bookDTO.getBookName().trim();
+
+        // to remove accent and space
+        String keyword = VNCharacterUtils.removeSpace(VNCharacterUtils.removeAccent(bookDTO.getBookName().trim())).toUpperCase();
+
         Iterable<Book> books = bookRepository.findAll();
         ArrayList<Book> foundBooks = new ArrayList<Book>();
         for (Book book : books){
-            if(book.getBookName().contains(keyword)) {
+            String rootName = VNCharacterUtils.removeSpace(VNCharacterUtils.removeAccent(book.getBookName()));
+            if(rootName.toUpperCase().contains(keyword)) {
                 foundBooks.add(book);
             }
         }

@@ -61,6 +61,7 @@ public class Borrow_BookController {
         bbRepository.save(bb);
         modelMap.addAttribute("books", bookRepository.findAll());
         modelMap.addAttribute("bbs", bbRepository.findAll());
+        modelMap.addAttribute("bookDTO", new BookDTO());
         return "manageBook";
     }
 
@@ -71,6 +72,7 @@ public class Borrow_BookController {
         modelMap.addAttribute("plc", plCompanyRepository.findById(book.getPlCompanyID()).get());
         modelMap.addAttribute("book", book);
         modelMap.addAttribute("customer", new Customer());
+        modelMap.addAttribute("bookDTO", new BookDTO());
         return "borrowForm";
     }
 
@@ -87,6 +89,7 @@ public class Borrow_BookController {
         }
         modelMap.addAttribute("books", bookRepository.findAll());
         modelMap.addAttribute("bbs", bbRepository.findAll());
+        modelMap.addAttribute("bookDTO", new BookDTO());
         return "manageBook";
     }
 }

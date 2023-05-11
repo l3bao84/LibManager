@@ -5,8 +5,8 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.3.1/dist/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
-    <link rel="stylesheet" th:href="@{/css/detailBook.css}">
-    <title>Chi tiết sách</title>
+    <link rel="stylesheet" th:href="@{/css/searchPage.css}">
+    <title>Tìm kiếm sách</title>
 </head>
 <body th:onload="formatPrice()">
     <div class="app">
@@ -46,54 +46,26 @@
         </div>
         <div class="category">
             <div class="category-title">
-                <p>DANH MỤC</p>
-            </div>
-            <div class="category-list">
-                <a th:each="category : ${categories}"  th:href="@{'/books/getBooksByCategoryID/' + ${category.getCategoryID()}}" class="category-item">
-                    <div class="category-item-img">
-                        <img th:src="@{${category.getCategoryImg()}}" alt="">
-                    </div>
-                    <div class="category-item-name" th:text="${category.getCategoryName()}"></div>
-                </a>
+                <p>Kết quả tìm kiếm cho: <p th:text="${bookDTO.getBookName()}"></p></p>
             </div>
             
-        </div>         
-        <div class="content">
-            <div class="detail-book">
-                <div class="detail-book-img">
-                    <img th:src="@{${book.getBookImg()}}" alt="">
-                    <div class="setting-btn">
-                        <div class="rbtn btn btn-success">
-                            <svg style="color: #fff;" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 20 20"><path fill="currentColor" d="M11.078 0c.294 0 .557.183.656.457l.706 1.957c.253.063.47.126.654.192c.201.072.46.181.78.33l1.644-.87a.702.702 0 0 1 .832.131l1.446 1.495c.192.199.246.49.138.744l-.771 1.807c.128.235.23.436.308.604c.084.183.188.435.312.76l1.797.77c.27.115.437.385.419.674l-.132 2.075a.69.69 0 0 1-.46.605l-1.702.605c-.049.235-.1.436-.154.606a8.79 8.79 0 0 1-.298.774l.855 1.89a.683.683 0 0 1-.168.793l-1.626 1.452a.703.703 0 0 1-.796.096l-1.676-.888a7.23 7.23 0 0 1-.81.367l-.732.274l-.65 1.8a.696.696 0 0 1-.64.457L9.11 20a.697.697 0 0 1-.669-.447l-.766-2.027a14.625 14.625 0 0 1-.776-.29a9.987 9.987 0 0 1-.618-.293l-1.9.812a.702.702 0 0 1-.755-.133L2.22 16.303a.683.683 0 0 1-.155-.783l.817-1.78a9.517 9.517 0 0 1-.302-.644a14.395 14.395 0 0 1-.3-.811L.49 11.74a.69.69 0 0 1-.49-.683l.07-1.921a.688.688 0 0 1 .392-.594L2.34 7.64c.087-.319.163-.567.23-.748a8.99 8.99 0 0 1 .314-.712L2.07 4.46a.683.683 0 0 1 .15-.79l1.404-1.326a.702.702 0 0 1 .75-.138l1.898.784c.21-.14.4-.253.572-.344c.205-.109.479-.223.824-.346l.66-1.841A.696.696 0 0 1 8.984 0h2.094Zm-1.054 7.019c-1.667 0-3.018 1.335-3.018 2.983c0 1.648 1.351 2.984 3.018 2.984c1.666 0 3.017-1.336 3.017-2.984s-1.35-2.983-3.017-2.983Z"/></svg>
-                            <a class="set" th:href="@{'/books/manageBook'}">Chỉnh sửa</a>
+            <div th:if="${found == true}">
+                <div class="content-list">
+                    <div class="books" th:each="book : ${books}">
+                        <div class="book-img">
+                            <a th:href="@{'/books/detailBook/' + ${book.getBookID()}}"><img th:src="@{${book.getBookImg()}}" alt=""></a>
                         </div>
-                    </div>
-                </div>
-                <div class="detail-book-infor">
-                    <div class="basic-infor">
-                        <div class="detail-book-infor-name" th:text="${book.getBookName()}"></div>
-                        <div class="detail-book-infor-price" th:text="${book.getBookPrice()}"></div>
-                        <div class="detail-book-infor-author" th:text="${'Tác giả: ' + author.getAuthorName()}"></div>
-                        <div class="detail-book-infor-plc" th:text="${'Nhà xuất bản: ' + plc.getPlCompanyName()}"></div>
-                        <div class="detail-book-infor-pages" th:text="${'Số trang: ' + book.getPageNumber()}"></div>
-                        <div class="detail-book-infor-rld" th:text="${'Ngày phát hành: ' + book.getReleasedDay()}"></div>
-                        <div class="detail-book-infor_number">
-                            Số lượng
-                            <div class="change-number">
-                                <button onclick="decrease()" class="decrease">-</button>
-                                <input class="text-number" type="text" value="1">
-                                <button onclick="increase()" class="increase">+</button>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="btn-rent">
-                        <div class="rbtn btn btn-success">
-                            <a class="set" th:href="@{'/bb/showBorrowForm/' + ${book.getBookID()}}">Mượn sách</a>
+                        <div class="name-price">
+                            <div class="book-name" th:text="${book.getBookName()}"></div>
+                            <div class="book-price" th:text="${book.getBookPrice()}"></div>
                         </div>
                     </div>
                 </div>
             </div>
-        </div>
+            <div th:unless="${found == true}" class="no-result-found">
+                <img th:src="@{https://i.pinimg.com/564x/12/bb/80/12bb80dc4852cab654f4ea52b42ef3dc.jpg}" alt="">
+            </div>
+        </div>         
         <div class="footer">
             <div class="social">
                 <div class="social-icons">
@@ -111,28 +83,13 @@
         </div>
     </div>
     <script>
-
-        function increase() {
-            var numberNow = document.getElementsByClassName("text-number")[0].value;
-            numberNow++
-            document.querySelector('.text-number').value = numberNow++;
-        }
-
-        function decrease() {
-            var numberNow = document.getElementsByClassName("text-number")[0].value;
-            if(numberNow > 1) {
-                numberNow--
-                document.querySelector('.text-number').value = numberNow--;
-            }
-        }
-
         function formatPrice() {
             const VND = new Intl.NumberFormat('vi-VN', {
             style: 'currency',
             currency: 'VND',
             });
             
-            let listPrice = document.querySelectorAll('.detail-book-infor-price')
+            let listPrice = document.querySelectorAll('.book-price')
             listPrice.forEach(element => {
                 element.innerHTML = VND.format(element.textContent)
             });

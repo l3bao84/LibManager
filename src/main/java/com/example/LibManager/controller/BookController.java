@@ -1,9 +1,6 @@
 package com.example.LibManager.controller;
 
-import com.example.LibManager.models.Author;
-import com.example.LibManager.models.Book;
-import com.example.LibManager.models.Borrow_Book;
-import com.example.LibManager.models.PlCompany;
+import com.example.LibManager.models.*;
 import com.example.LibManager.repositories.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -39,6 +36,7 @@ public class BookController {
         modelMap.addAttribute("plc", plCompanyRepository.findById(book.getPlCompanyID()).get());
         modelMap.addAttribute("categories", categoryRepository.findAll());
         modelMap.addAttribute("book", book);
+        modelMap.addAttribute("bookDTO", new BookDTO());
         return "detailBook";
     }
 
@@ -46,6 +44,7 @@ public class BookController {
     public String manageBook(ModelMap modelMap) {
         modelMap.addAttribute("books", bookRepository.findAll());
         modelMap.addAttribute("bbs", bBRepository.findAll());
+        modelMap.addAttribute("bookDTO", new BookDTO());
         return "manageBook";
     }
 
@@ -55,6 +54,7 @@ public class BookController {
             bookRepository.deleteById(bookID);
             modelMap.addAttribute("books", bookRepository.findAll());
             modelMap.addAttribute("bbs", bBRepository.findAll());
+            modelMap.addAttribute("bookDTO", new BookDTO());
             return "manageBook";
         }catch (Exception ex) {
             modelMap.addAttribute("error", ex.toString());
@@ -66,6 +66,7 @@ public class BookController {
     public String insertBook(ModelMap modelMap) {
         modelMap.addAttribute("book", new Book());
         modelMap.addAttribute("categories", categoryRepository.findAll());
+        modelMap.addAttribute("bookDTO", new BookDTO());
         return "insertBook";
     }
 
@@ -120,6 +121,7 @@ public class BookController {
         if(bindingResult.hasErrors() == true) {
             modelMap.addAttribute("books", bookRepository.findAll());
             modelMap.addAttribute("bbs", bBRepository.findAll());
+            modelMap.addAttribute("bookDTO", new BookDTO());
             return "manageBook";
         }else {
             try {
@@ -156,6 +158,7 @@ public class BookController {
         book.setAuthorID(getAuthorNameByID(book.getAuthorID()));
         book.setPlCompanyID(getPlCompanyNameByID(book.getPlCompanyID()));
         modelMap.addAttribute("book", book);
+        modelMap.addAttribute("bookDTO", new BookDTO());
         return "updateBook";
     }
 
@@ -181,6 +184,7 @@ public class BookController {
                     foundBook.setPlCompanyID(getPlCompanyIDByName(book.getPlCompanyID()));
                     bookRepository.save(foundBook);
                     modelMap.addAttribute("books", bookRepository.findAll());
+                    modelMap.addAttribute("bookDTO", new BookDTO());
                     return "manageBook";
                 }
             }catch (Exception ex) {
@@ -190,6 +194,7 @@ public class BookController {
         }
         modelMap.addAttribute("books", bookRepository.findAll());
         modelMap.addAttribute("bbs", bBRepository.findAll());
+        modelMap.addAttribute("bookDTO", new BookDTO());
         return "manageBook";
     }
 
@@ -197,6 +202,7 @@ public class BookController {
     public String getBooksByCategoryID(ModelMap modelMap, @PathVariable String categoryID) {
         modelMap.addAttribute("category", categoryRepository.findById(categoryID).get());
         modelMap.addAttribute("books", bookRepository.findByCategoryID(categoryID));
+        modelMap.addAttribute("bookDTO", new BookDTO());
         return "bookOnCat";
     }
 

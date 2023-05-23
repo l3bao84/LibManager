@@ -4,28 +4,6 @@ import com.example.LibManager.models.Book;
 import com.example.LibManager.models.Borrow;
 import com.example.LibManager.models.Customer;
 import com.example.LibManager.repositories.*;
-import jakarta.persistence.FlushModeType;
-import jakarta.persistence.criteria.CriteriaDelete;
-import jakarta.persistence.criteria.CriteriaQuery;
-import jakarta.persistence.criteria.CriteriaUpdate;
-import org.hibernate.*;
-import org.hibernate.cache.spi.CacheTransactionSynchronization;
-import org.hibernate.collection.spi.PersistentCollection;
-import org.hibernate.engine.jdbc.LobCreator;
-import org.hibernate.engine.jdbc.connections.spi.JdbcConnectionAccess;
-import org.hibernate.engine.jdbc.spi.JdbcCoordinator;
-import org.hibernate.engine.jdbc.spi.JdbcServices;
-import org.hibernate.engine.spi.*;
-import org.hibernate.persister.entity.EntityPersister;
-import org.hibernate.procedure.ProcedureCall;
-import org.hibernate.query.MutationQuery;
-import org.hibernate.query.SelectionQuery;
-import org.hibernate.query.criteria.HibernateCriteriaBuilder;
-import org.hibernate.query.criteria.JpaCriteriaInsertSelect;
-import org.hibernate.query.spi.QueryImplementor;
-import org.hibernate.query.sql.spi.NativeQueryImplementor;
-import org.hibernate.resource.jdbc.spi.JdbcSessionContext;
-import org.hibernate.resource.transaction.spi.TransactionCoordinator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
@@ -36,7 +14,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
 import java.util.*;
-import java.util.stream.Stream;
 
 @Controller
 @RequestMapping(path = "customer")

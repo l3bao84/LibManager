@@ -65,7 +65,7 @@
             <div class="content-list">
                 <div class="books" th:each="book : ${books}">
                     <div class="book-img">
-                        <a th:href="@{'/books/detailBook/' + ${book.getBookID()}}"><img th:src="@{${book.getBookImg()}}" alt=""></a>
+                        <a th:href="@{'/books/detailBook/' + ${book.getBookID()}}"><img th:src="@{'/books/' + ${book.getBookID()}}" alt=""></a>
                     </div>
                     <div class="name-price">
                         <div class="book-name" th:text="${book.getBookName()}"></div>

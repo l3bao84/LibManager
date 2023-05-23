@@ -48,7 +48,7 @@
         <div class="form-insert">
             <form class="form" method="POST" 
                 th:action="@{'/books/updateBook/' + ${book.getBookID()}}"
-                th:object="${book}">
+                th:object="${book}" enctype="multipart/form-data">
                 <div class="form-group">
                     <label for="exampleInputEmail1">Tên sách</label>
                     <input th:field="*{bookName}" type="text" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" placeholder="Nhập tên sách">
@@ -86,9 +86,8 @@
                     </select>
                 </div>
                 <div class="form-group">
-                    <label for="exampleInputPassword1">Đường dẫn ảnh</label>
-                    <input th:field="*{bookImg}" type="text" class="form-control" id="exampleInputPassword1">
-                    <p class="error" th:errors="*{bookImg}"></p>
+                    <label for="formFileMultiple" class="form-label">Chọn file ảnh</label>
+                    <input class="form-control" name="file" accept="image/png, image/jpeg" type="file" id="formFileMultiple">
                 </div>
                 <p class="error" th:text="${error}"></p>
                 <input type="submit" class="btn btn-primary" value="Cập nhật"></input>

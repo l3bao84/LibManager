@@ -2,32 +2,37 @@ package com.example.LibManager.controller;
 
 import com.example.LibManager.models.*;
 import com.example.LibManager.repositories.*;
+import com.example.LibManager.services.StorageService;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.validation.Valid;
+import java.io.IOException;
 
 @Controller
 @RequestMapping(path = "books")
+@RequiredArgsConstructor
 public class BookController {
 
-    @Autowired
-    private PlCompanyRepository plCompanyRepository;
+    private final PlCompanyRepository plCompanyRepository;
 
-    @Autowired
-    private AuthorRepository authorRepository;
+    private final AuthorRepository authorRepository;
 
-    @Autowired
-    private CategoryRepository categoryRepository;
+    private final CategoryRepository categoryRepository;
 
-    @Autowired
-    private BookRepository bookRepository;
+    private final BookRepository bookRepository;
 
-    @Autowired
-    private Borrow_BookRepository bBRepository;
+    private final Borrow_BookRepository bBRepository;
+
+    private final StorageService service;
 
     @RequestMapping(path = "/detailBook/{bookID}", method = RequestMethod.GET)
     public String getDetailBook(ModelMap modelMap, @PathVariable String bookID) {
@@ -51,6 +56,12 @@ public class BookController {
     @RequestMapping(path = "/deleteBook/{bookID}", method = RequestMethod.POST)
     public String deleteBook(@PathVariable String bookID, ModelMap modelMap) {
         try{
+            Iterable<Borrow_Book> bbs = bBRepository.findAll();
+            for (Borrow_Book bb: bbs) {
+                if(bb.getBorrowBookKey().getBookID().equalsIgnoreCase(bookID)) {
+                    bBRepository.delete(bb);
+                }
+            }
             bookRepository.deleteById(bookID);
             modelMap.addAttribute("books", bookRepository.findAll());
             modelMap.addAttribute("bbs", bBRepository.findAll());
@@ -114,10 +125,19 @@ public class BookController {
         return name;
     }
 
+    @GetMapping("/{bookID}")
+    public ResponseEntity<?> downloadImageFromFileSystem(@PathVariable String bookID) throws IOException {
+        byte[] imageData = service.downloadImageFromFileSystem(bookID);
+        return ResponseEntity.status(HttpStatus.OK)
+                .contentType(MediaType.valueOf("image/png"))
+                .body(imageData);
+    }
+
     @RequestMapping(path = "/insertBook", method = RequestMethod.POST)
     public String insertBook(ModelMap modelMap,
                              @Valid @ModelAttribute("book") Book book,
-                             BindingResult bindingResult) {
+                             BindingResult bindingResult,
+                             @RequestParam("file") MultipartFile file) {
         if(bindingResult.hasErrors() == true) {
             modelMap.addAttribute("books", bookRepository.findAll());
             modelMap.addAttribute("bbs", bBRepository.findAll());
@@ -138,11 +158,16 @@ public class BookController {
                     plCompany.setPlCompanyName(book.getPlCompanyID());
                     plCompanyRepository.save(plCompany);
                     book.setPlCompanyID(plCompany.getPlCompanyID());
+                    book.setImagePath(service.uploadFileToFileSystem(file));
                     bookRepository.save(book);
                 } else {
                     book.setPlCompanyID(getPlCompanyIDByName(book.getPlCompanyID()));
                 }
+                book.setImagePath(service.uploadFileToFileSystem(file));
                 bookRepository.save(book);
+                modelMap.addAttribute("books", bookRepository.findAll());
+                modelMap.addAttribute("bbs", bBRepository.findAll());
+                modelMap.addAttribute("bookDTO", new BookDTO());
                 return "manageBook";
             } catch (Exception ex) {
                 modelMap.addAttribute("error", ex.toString());
@@ -166,7 +191,8 @@ public class BookController {
     public String updateBook(ModelMap modelMap,
                              @PathVariable String bookID,
                              @Valid @ModelAttribute("book") Book book,
-                             BindingResult bindingResult) {
+                             BindingResult bindingResult,
+                             @RequestParam("file") MultipartFile file) {
         if(bindingResult.hasErrors()) {
             return "updateBookForm";
         }else {
@@ -178,7 +204,8 @@ public class BookController {
                     foundBook.setBookPrice(book.getBookPrice());
                     foundBook.setPageNumber(book.getPageNumber());
                     foundBook.setReleasedDay(book.getReleasedDay());
-                    foundBook.setBookImg(book.getBookImg());
+                    book.setImagePath(service.uploadFileToFileSystem(file));
+                    foundBook.setImagePath(book.getImagePath());
                     foundBook.setCategoryID(book.getCategoryID());
                     foundBook.setAuthorID(getAuthorIDByName(book.getAuthorID()));
                     foundBook.setPlCompanyID(getPlCompanyIDByName(book.getPlCompanyID()));

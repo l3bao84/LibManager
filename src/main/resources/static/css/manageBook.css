@@ -108,6 +108,8 @@ body {
     background-color: #4daf54;
 }
 .footer {
+    position: absolute;
+    bottom: 0;
     height: 160px;
     width: 100%;
 }
@@ -206,4 +208,12 @@ body {
 }
 .close {
     display: none;
+}
+.no-result-found {
+    width: 100%;
+    text-align: center;
+}
+.no-result-found > img {
+    width: 80%;
+    height: 80%;
 }

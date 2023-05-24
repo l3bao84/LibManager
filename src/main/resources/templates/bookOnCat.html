@@ -48,16 +48,21 @@
             <div class="content-title">
                 <p th:text="${'Danh mục > ' + category.getCategoryName()}"></p>
             </div>
-            <div class="content-list">
-                <div class="books" th:each="book : ${books}">
-                    <div class="book-img">
-                        <a th:href="@{'/books/detailBook/' + ${book.getBookID()}}"><img th:src="@{'/books/' + ${book.getBookID()}}" alt=""></a>
-                    </div>
-                    <div class="name-price">
-                        <div class="book-name" th:text="${book.getBookName()}"></div>
-                        <div class="book-price" th:text="${book.getBookPrice()}"></div>
+            <div th:if="${hasData == true}">
+                <div class="content-list">
+                    <div class="books" th:each="book : ${books}">
+                        <div class="book-img">
+                            <a th:href="@{'/books/detailBook/' + ${book.getBookID()}}"><img th:src="@{'/books/' + ${book.getBookID()}}" alt=""></a>
+                        </div>
+                        <div class="name-price">
+                            <div class="book-name" th:text="${book.getBookName()}"></div>
+                            <div class="book-price" th:text="${book.getBookPrice()}"></div>
+                        </div>
                     </div>
                 </div>
+            </div>
+            <div th:unless="${hasData == true}" class="no-result-found">
+                <img th:src="@{https://img.freepik.com/free-vector/no-data-concept-illustration_114360-536.jpg?w=2000}" alt="">
             </div>
         </div>
         <div class="footer">

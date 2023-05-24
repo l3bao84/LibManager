@@ -202,3 +202,11 @@ body {
     padding-right: 4px;
     margin-top: -9px;
 }
+.no-result-found {
+    width: 100%;
+    text-align: center;
+}
+.no-result-found > img {
+    width: 80%;
+    height: 80%;
+}

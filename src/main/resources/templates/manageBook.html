@@ -53,6 +53,7 @@
                   <a class="nav-link show-borrow-manage">Quản lý mượn/trả</a>
                 </li>
             </ul>    
+
             <table class="table table-book-manage">
                 <thead class="thead-dark">
                   <tr>
@@ -67,36 +68,37 @@
                     </th>
                   </tr>
                 </thead>
-                <tbody th:each="book : ${books}">
-                  <tr>
-                    <td th:text="${book.getBookID()}"></td>
-                    <td th:text="${book.getCategoryID()}"></td>
-                    <td>
-                        <div class="book-name">
-                            <a th:href="@{'/books/detailBook/' + ${book.getBookID()}}" th:text="${book.getBookName()}"></a>
-                        </div>
-                    </td>
-                    <td th:text="${book.getAuthorID()}"></td>
-                    <td th:text="${book.getPlCompanyID()}"></td>
-                    <td th:text="${book.getReleasedDay()}"></td>
-                    <td>
-                        <div class="act">
-                            <div class="act-fix">
-                                <a th:href="@{'/books/updateBookForm/' + ${book.getBookID()}}"><button type="button" class="btn btn-success">Sửa</button></a>
-                            </div>
-                            <div class="act-del">
-                                <form th:action="@{'/books/deleteBook/' + ${book.getBookID()}}"  
-                                    method="POST"
-                                    th:onsubmit="return confirm('Bạn có chắc chắn muốn xóa sản phẩm này không?') ? true : false">
-                                    <input type="submit" class="btn btn-danger style_btn" th:value="Xóa">
-                                </form>
 
-                            </div>
-                        </div>
-                    </td>
-                  </tr>
+                <tbody th:each="book : ${books}">
+                    <tr>
+                      <td th:text="${book.getBookID()}"></td>
+                      <td th:text="${book.getCategoryID()}"></td>
+                      <td>
+                          <div class="book-name">
+                              <a th:href="@{'/books/detailBook/' + ${book.getBookID()}}" th:text="${book.getBookName()}"></a>
+                          </div>
+                      </td>
+                      <td th:text="${book.getAuthorID()}"></td>
+                      <td th:text="${book.getPlCompanyID()}"></td>
+                      <td th:text="${book.getReleasedDay()}"></td>
+                      <td>
+                          <div class="act">
+                              <div class="act-fix">
+                                  <a th:href="@{'/books/updateBookForm/' + ${book.getBookID()}}"><button type="button" class="btn btn-success">Sửa</button></a>
+                              </div>
+                              <div class="act-del">
+                                  <form th:action="@{'/books/deleteBook/' + ${book.getBookID()}}"  
+                                      method="POST"
+                                      th:onsubmit="return confirm('Bạn có chắc chắn muốn xóa sản phẩm này không?') ? true : false">
+                                      <input type="submit" class="btn btn-danger style_btn" th:value="Xóa">
+                                  </form>
+  
+                              </div>
+                          </div>
+                      </td>
+                    </tr>
                 </tbody>
-            </table> 
+            </table>
 
             <table class="table table-borrow-manage close">
                 <thead class="thead-dark">
@@ -110,27 +112,28 @@
                   </tr>
                 </thead>
                 <tbody th:each="bb : ${bbs}">
-                  <tr>
-                    <td th:text="${bb.getBorrowBookKey().getBorrowID()}"></td>
-                    <td th:text="${bb.getBorrowBookKey().getBookID()}"></td>
-                    <td th:text="${bb.getBorrowDay()}"></td>
-                    <td th:text="${bb.getReturnDay()}"></td>
-                    <td th:text="${bb.getStatus()}"></td>
-                    <td>
-                        <div class="act">
-                            <div class="act-del">
-                                <form th:action="@{'/bb/return/' + ${bb.getBorrowBookKey().getBorrowID()}}"  
-                                    method="POST"
-                                    th:onsubmit="return confirm('Trả cuốn sách này?') ? true : false">
-                                    <input type="submit" class="btn btn-danger style_btn" th:value="Trả">
-                                </form>
-                                <!-- <a th:href="@{'/bb/return/' + ${bb.getBorrowBookKey()}}" class="btn btn-danger style_btn">Trả sách</a> -->
-                            </div>
-                        </div>
-                    </td>
-                  </tr>
+                    <tr>
+                      <td th:text="${bb.getBorrowBookKey().getBorrowID()}"></td>
+                      <td th:text="${bb.getBorrowBookKey().getBookID()}"></td>
+                      <td th:text="${bb.getBorrowDay()}"></td>
+                      <td th:text="${bb.getReturnDay()}"></td>
+                      <td th:text="${bb.getStatus()}"></td>
+                      <td>
+                          <div class="act">
+                              <div class="act-del">
+                                  <form th:action="@{'/bb/return/' + ${bb.getBorrowBookKey().getBorrowID()}}"  
+                                      method="POST"
+                                      th:onsubmit="return confirm('Trả cuốn sách này?') ? true : false">
+                                      <input type="submit" class="btn btn-danger style_btn" th:value="Trả">
+                                  </form>
+                                  <!-- <a th:href="@{'/bb/return/' + ${bb.getBorrowBookKey()}}" class="btn btn-danger style_btn">Trả sách</a> -->
+                              </div>
+                          </div>
+                      </td>
+                    </tr>
                 </tbody>
-            </table> 
+            </table>
+                            
         </div>
         <div class="footer">
             <div class="social">

@@ -16,6 +16,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import javax.validation.Valid;
 import java.io.IOException;
+import java.util.ArrayList;
 
 @Controller
 @RequestMapping(path = "books")
@@ -227,8 +228,17 @@ public class BookController {
 
     @RequestMapping(path = "/getBooksByCategoryID/{categoryID}", method = RequestMethod.GET)
     public String getBooksByCategoryID(ModelMap modelMap, @PathVariable String categoryID) {
+        ArrayList<Book> books = (ArrayList<Book>) bookRepository.findByCategoryID(categoryID);
+        if(!books.isEmpty()) {
+            modelMap.addAttribute("category", categoryRepository.findById(categoryID).get());
+            modelMap.addAttribute("books", books);
+            modelMap.addAttribute("hasData", true);
+            modelMap.addAttribute("bookDTO", new BookDTO());
+            return "bookOnCat";
+        }
         modelMap.addAttribute("category", categoryRepository.findById(categoryID).get());
-        modelMap.addAttribute("books", bookRepository.findByCategoryID(categoryID));
+        modelMap.addAttribute("books", books);
+        modelMap.addAttribute("hasData", false);
         modelMap.addAttribute("bookDTO", new BookDTO());
         return "bookOnCat";
     }

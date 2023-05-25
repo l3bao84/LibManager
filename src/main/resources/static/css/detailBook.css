@@ -178,10 +178,11 @@ body {
     width: 40%;
     text-align: center;
     margin: 60px;
+    height: 510px;
 }
 .detail-book-img > img {
     width: 100%;
-    height: 80%
+    height: 80%;
 }
 .setting-btn{
     height: 20%;

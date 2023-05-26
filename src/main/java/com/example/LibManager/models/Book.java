@@ -56,7 +56,7 @@ public class Book {
 
     @Lob
     @Column(name = "imagePath", length = 1000)
-    @NotEmpty(message = "Bạn chưa chọn file ảnh")
+    //@NotEmpty(message = "Bạn chưa chọn file ảnh")
     private String imagePath;
 
     @Column(name = "categoryID")

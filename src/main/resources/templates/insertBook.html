@@ -90,7 +90,7 @@
                         <label for="formFileMultiple" class="form-label">Chọn file ảnh</label>
                         <input class="form-control" name="file" accept="image/png, image/jpeg" type="file" id="formFileMultiple">
                     </div>
-                    <p class="error" th:errors="*{imagePath}"></p>
+                    <!-- <p class="error" th:errors="*{imagePath}"></p> -->
                 </div>
                 <p class="error" th:text="${error}"></p>
                 <input type="submit" class="btn btn-primary" value="Thêm mới"></input>

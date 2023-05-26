@@ -190,6 +190,7 @@ body {
 }
 .books {
     width: 20%;
+    height: 400px;
     margin: 12px 4px 0;
     background-color: #f5f5f5;
     border-radius: 3px;
@@ -197,7 +198,7 @@ body {
 }
 .book-img {
     text-align: center;
-    height: 60%;
+    height: 300px;
 }
 .book-img > a > img {
     width: 100%;
@@ -206,6 +207,7 @@ body {
     border-top-right-radius: 3px;
 }
 .name-price {
+    height: 100px;
     padding: 8px;
 }
 .book-name {

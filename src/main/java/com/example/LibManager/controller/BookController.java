@@ -139,11 +139,15 @@ public class BookController {
                              @Valid @ModelAttribute("book") Book book,
                              BindingResult bindingResult,
                              @RequestParam("file") MultipartFile file) {
-        if(bindingResult.hasErrors() == true) {
-            modelMap.addAttribute("books", bookRepository.findAll());
+        if(bindingResult.hasErrors()) {
+            /*modelMap.addAttribute("books", bookRepository.findAll());
             modelMap.addAttribute("bbs", bBRepository.findAll());
             modelMap.addAttribute("bookDTO", new BookDTO());
-            return "manageBook";
+            return "manageBook";*/
+            //modelMap.addAttribute("book", new Book());
+            modelMap.addAttribute("categories", categoryRepository.findAll());
+            modelMap.addAttribute("bookDTO", new BookDTO());
+            return "insertBook";
         }else {
             try {
                 if (getAuthorIDByName(book.getAuthorID()) == "") {

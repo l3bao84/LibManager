@@ -107,6 +107,7 @@
                     <th scope="col">Mã sách</th>
                     <th scope="col">Ngày mượn</th>
                     <th scope="col">Ngày trả</th>
+                    <th scope="col">Phí mượn</th>
                     <th scope="col">Trạng thái</th>
                     <th scope="col">Thao tác</th>
                   </tr>
@@ -117,6 +118,7 @@
                       <td th:text="${bb.getBorrowBookKey().getBookID()}"></td>
                       <td th:text="${bb.getBorrowDay()}"></td>
                       <td th:text="${bb.getReturnDay()}"></td>
+                      <td class="borrow-fee" th:text="${bb.getBorrowFee()}"></td>
                       <td th:text="${bb.getStatus()}"></td>
                       <td>
                           <div class="act">
@@ -130,6 +132,12 @@
                               </div>
                           </div>
                       </td>
+                    </tr>
+                </tbody>
+                <tbody>
+                    <tr>
+                        <td th:text="'Tổng doanh thu hôm nay: '"></td>
+                        <td class="borrow-fee" th:text="${sum}"></td>
                     </tr>
                 </tbody>
             </table>
@@ -173,7 +181,7 @@
             currency: 'VND',
             });
             
-            let listPrice = document.querySelectorAll('.detail-book-infor-price')
+            let listPrice = document.querySelectorAll('.borrow-fee')
             listPrice.forEach(element => {
                 element.innerHTML = VND.format(element.textContent)
             });

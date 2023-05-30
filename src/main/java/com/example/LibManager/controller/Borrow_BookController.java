@@ -2,6 +2,8 @@ package com.example.LibManager.controller;
 
 import com.example.LibManager.models.*;
 import com.example.LibManager.repositories.*;
+import com.example.LibManager.services.LengthOfMonth;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Controller;
@@ -10,12 +12,16 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDate;
+import java.util.Collection;
 import java.util.HashSet;
 import java.util.Set;
 
 @Controller
 @RequestMapping(path = "bb")
+@RequiredArgsConstructor
 public class Borrow_BookController {
+
+    public static double sum = 0;
 
     @Autowired
     private CustomerRepository customerRepository;
@@ -35,6 +41,13 @@ public class Borrow_BookController {
     @Autowired
     private BorrowRepository borrowRepository;
 
+    public int size(Iterable<?> iterable) {
+        if (iterable instanceof Collection) {
+            return ((Collection<?>) iterable).size();
+        }
+        return 0;
+    }
+
     @RequestMapping(path = "/addBB/{bookID}", method = RequestMethod.POST)
     public String addBB(ModelMap modelMap,
                       @PathVariable String bookID,
@@ -46,11 +59,16 @@ public class Borrow_BookController {
         Borrow borrow = borrowRepository.findByCustomer(foundCustomer).get();
 
         // thời gian mượn sách không quá 7 ngày
-        LocalDate returnDay = LocalDate.of(LocalDate.now().getYear(),
-                                           LocalDate.now().getMonth(),
-                                           LocalDate.now().getDayOfMonth() + 7);
+        LocalDate returnDay = null;
+        int lom = LengthOfMonth.LOM(LocalDate.now().getYear(), LocalDate.now().getMonth().getValue());
 
-        Borrow_Book bb = new Borrow_Book(borrow, borrowBook, LocalDate.now(), returnDay, "Đang mượn");
+        if(LocalDate.now().getDayOfMonth() >= 25) {
+            returnDay = LocalDate.of(LocalDate.now().getYear(),
+                    LocalDate.now().getMonthValue() + 1,
+                    (LocalDate.now().getDayOfMonth() + 7) - lom);
+        }
+
+        Borrow_Book bb = new Borrow_Book(borrow, borrowBook, LocalDate.now(), returnDay, borrowBook.getBookPrice() * 10 / 100,"Đang mượn");
 
         Set<Borrow_Book> bbs = new HashSet<Borrow_Book>();
         bbs.add(bb);
@@ -59,6 +77,13 @@ public class Borrow_BookController {
         borrow.setBorrow_books(bbs);
 
         bbRepository.save(bb);
+        //Iterable<Borrow_Book> bbs = bBRepository.findAll();
+        for (Borrow_Book b: bbs) {
+            if(LocalDate.now().equals(bb.getBorrowDay())) {
+                sum += bb.getBorrowFee();
+            }
+        }
+        modelMap.addAttribute("sum", sum);
         modelMap.addAttribute("books", bookRepository.findAll());
         modelMap.addAttribute("bbs", bbRepository.findAll());
         modelMap.addAttribute("bookDTO", new BookDTO());
@@ -87,6 +112,7 @@ public class Borrow_BookController {
                 break;
             }
         }
+        modelMap.addAttribute("sum", sum);
         modelMap.addAttribute("books", bookRepository.findAll());
         modelMap.addAttribute("bbs", bbRepository.findAll());
         modelMap.addAttribute("bookDTO", new BookDTO());

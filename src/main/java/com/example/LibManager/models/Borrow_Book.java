@@ -1,17 +1,13 @@
 package com.example.LibManager.models;
 
 import jakarta.persistence.*;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
 import java.time.LocalDate;
 
 @Entity
 @Table(name = "borrow_book")
 @NoArgsConstructor
-@Getter
-@Setter
 public class Borrow_Book {
 
     @EmbeddedId
@@ -36,11 +32,16 @@ public class Borrow_Book {
     @Column(name = "status")
     private String status;
 
-    public Borrow_Book(Borrow borrow, Book book, LocalDate borrowDay, LocalDate returnDay, String status) {
+    @Column(name = "borrowFee")
+    private double borrowFee;
+
+
+    public Borrow_Book(Borrow borrow, Book book, LocalDate borrowDay, LocalDate returnDay, double borrowFee, String status) {
         this.borrow = borrow;
         this.book = book;
         this.borrowDay = borrowDay;
         this.returnDay = returnDay;
+        this.borrowFee = borrowFee;
         this.status = status;
     }
 
@@ -92,7 +93,11 @@ public class Borrow_Book {
         this.status = status;
     }
 
-    public void test() {
-        this.borrowBookKey.getBorrowID();
+    public double getBorrowFee() {
+        return borrowFee;
+    }
+
+    public void setBorrowFee(double borrowFee) {
+        this.borrowFee = borrowFee;
     }
 }

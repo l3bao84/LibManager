@@ -16,6 +16,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import javax.validation.Valid;
 import java.io.IOException;
+import java.time.LocalDate;
 import java.util.ArrayList;
 
 @Controller
@@ -48,8 +49,11 @@ public class BookController {
 
     @RequestMapping(path = "/manageBook", method = RequestMethod.GET)
     public String manageBook(ModelMap modelMap) {
+
+        Iterable<Borrow_Book> bbs = bBRepository.findAll();
+        modelMap.addAttribute("sum", Borrow_BookController.sum);
         modelMap.addAttribute("books", bookRepository.findAll());
-        modelMap.addAttribute("bbs", bBRepository.findAll());
+        modelMap.addAttribute("bbs", bbs);
         modelMap.addAttribute("bookDTO", new BookDTO());
         return "manageBook";
     }
@@ -64,6 +68,8 @@ public class BookController {
                 }
             }
             bookRepository.deleteById(bookID);
+            //Iterable<Borrow_Book> bbs = bBRepository.findAll();
+            modelMap.addAttribute("sum", Borrow_BookController.sum);
             modelMap.addAttribute("books", bookRepository.findAll());
             modelMap.addAttribute("bbs", bBRepository.findAll());
             modelMap.addAttribute("bookDTO", new BookDTO());
@@ -170,6 +176,7 @@ public class BookController {
                 }
                 book.setImagePath(service.uploadFileToFileSystem(file));
                 bookRepository.save(book);
+                modelMap.addAttribute("sum", Borrow_BookController.sum);
                 modelMap.addAttribute("books", bookRepository.findAll());
                 modelMap.addAttribute("bbs", bBRepository.findAll());
                 modelMap.addAttribute("bookDTO", new BookDTO());
@@ -215,6 +222,7 @@ public class BookController {
                     foundBook.setAuthorID(getAuthorIDByName(book.getAuthorID()));
                     foundBook.setPlCompanyID(getPlCompanyIDByName(book.getPlCompanyID()));
                     bookRepository.save(foundBook);
+                    modelMap.addAttribute("sum", Borrow_BookController.sum);
                     modelMap.addAttribute("books", bookRepository.findAll());
                     modelMap.addAttribute("bookDTO", new BookDTO());
                     return "manageBook";
@@ -224,6 +232,7 @@ public class BookController {
                 return "updateBookForm";
             }
         }
+        modelMap.addAttribute("sum", Borrow_BookController.sum);
         modelMap.addAttribute("books", bookRepository.findAll());
         modelMap.addAttribute("bbs", bBRepository.findAll());
         modelMap.addAttribute("bookDTO", new BookDTO());

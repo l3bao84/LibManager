@@ -1,6 +1,7 @@
 package com.example.LibManager.controller;
 
 import com.example.LibManager.models.Book;
+import com.example.LibManager.models.BookDTO;
 import com.example.LibManager.models.Borrow;
 import com.example.LibManager.models.Customer;
 import com.example.LibManager.repositories.*;
@@ -60,6 +61,7 @@ public class CustomerController {
             modelMap.addAttribute("plc", plCompanyRepository.findById(book.getPlCompanyID()).get());
             modelMap.addAttribute("book", book);
             modelMap.addAttribute("customer", new Customer());
+            modelMap.addAttribute("bookDTO", new BookDTO());
             return "borrowForm";
         }else {
             Borrow borrow = new Borrow("None");
@@ -78,6 +80,7 @@ public class CustomerController {
             modelMap.addAttribute("plc", plCompanyRepository.findById(book.getPlCompanyID()).get());
             modelMap.addAttribute("book", book);
             modelMap.addAttribute("customer", customer);
+            modelMap.addAttribute("bookDTO", new BookDTO());
             return "borrowForm";
         }
     }

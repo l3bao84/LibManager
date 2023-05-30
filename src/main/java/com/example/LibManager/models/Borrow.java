@@ -2,6 +2,9 @@ package com.example.LibManager.models;
 
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 import org.hibernate.annotations.Fetch;
 import org.hibernate.annotations.GenericGenerator;
 
@@ -9,6 +12,8 @@ import java.util.Set;
 
 @Entity
 @Table(name = "borrow")
+@NoArgsConstructor
+@AllArgsConstructor
 public class Borrow {
 
     @Id
@@ -27,7 +32,6 @@ public class Borrow {
     @JsonManagedReference
     private Set<Borrow_Book> borrow_books;
 
-    public Borrow() {}
 
     public Borrow(String notes) {
         this.notes = notes;

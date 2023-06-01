@@ -32,7 +32,8 @@ public class HomeController {
     }
 
     @PostMapping("/search")
-    public String search(ModelMap modelMap,@ModelAttribute("bookDTO") BookDTO bookDTO) {
+    public String search(ModelMap modelMap,
+                         @ModelAttribute("bookDTO") BookDTO bookDTO) {
 
         // to remove accent and space
         String keyword = VNCharacterUtils.removeSpace(VNCharacterUtils.removeAccent(bookDTO.getBookName().trim())).toUpperCase();

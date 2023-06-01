@@ -146,11 +146,6 @@ public class BookController {
                              BindingResult bindingResult,
                              @RequestParam("file") MultipartFile file) {
         if(bindingResult.hasErrors()) {
-            /*modelMap.addAttribute("books", bookRepository.findAll());
-            modelMap.addAttribute("bbs", bBRepository.findAll());
-            modelMap.addAttribute("bookDTO", new BookDTO());
-            return "manageBook";*/
-            //modelMap.addAttribute("book", new Book());
             modelMap.addAttribute("categories", categoryRepository.findAll());
             modelMap.addAttribute("bookDTO", new BookDTO());
             return "insertBook";

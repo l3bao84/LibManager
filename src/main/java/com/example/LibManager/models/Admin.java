@@ -2,6 +2,7 @@ package com.example.LibManager.models;
 
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotEmpty;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -27,9 +28,17 @@ public class Admin implements UserDetails {
     @GeneratedValue(generator = "adminGenerator")
     @GenericGenerator(name = "adminGenerator", strategy = "com.example.LibManager.Generator.AdminIDGenerator")
     private String adminID;
+
+    @NotEmpty(message = "Không được để trống trường này")
     private String firstName;
+
+    @NotEmpty(message = "Không được để trống trường này")
     private String lastName;
+
+    @NotEmpty(message = "Không được để trống trường này")
     private String email;
+
+    @NotEmpty(message = "Không được để trống trường này")
     private String password;
 
     @Enumerated(EnumType.STRING)

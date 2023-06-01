@@ -299,4 +299,7 @@ body {
 }      
 .form-group > label {
     font-size: 16px;
-}  
+}
+.error{
+    color: red;
+}

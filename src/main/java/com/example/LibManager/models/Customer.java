@@ -2,6 +2,7 @@ package com.example.LibManager.models;
 
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotEmpty;
 import org.hibernate.annotations.GenericGenerator;
 
 import java.util.Set;
@@ -17,12 +18,15 @@ public class Customer {
     private String customerID;
 
     @Column(name = "customerName")
+    @NotEmpty(message = "Tên khách hàng không được để trống")
     private String customerName;
 
     @Column(name = "phoneNumber")
+    @NotEmpty(message = "SĐT không được để trống")
     private String phoneNumber;
 
     @Column(name = "customerLocation")
+    @NotEmpty(message = "Địa chỉ khách hàng không được để trống")
     private String customerLocation;
 
     @OneToMany(mappedBy = "customer", cascade = CascadeType.ALL,fetch = FetchType.LAZY)

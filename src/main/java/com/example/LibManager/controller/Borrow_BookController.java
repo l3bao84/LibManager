@@ -53,7 +53,14 @@ public class Borrow_BookController {
                       @PathVariable String bookID,
                       @ModelAttribute("customer") Customer customer,
                       BindingResult bindingResult) {
-        Customer foundCustomer = customerRepository.findByCustomerName(customer.getCustomerName()).get();
+
+        Customer foundCustomer = new Customer();
+
+        if (customerRepository.findByCustomerName(customer.getCustomerName()).isPresent()) {
+            foundCustomer = customerRepository.findByCustomerName(customer.getCustomerName()).get();
+        }else {
+            return "redirect:/bb/showBorrowForm/" + bookID;
+        }
 
         Book borrowBook = bookRepository.findById(bookID).get();
         Borrow borrow = borrowRepository.findByCustomer(foundCustomer).get();

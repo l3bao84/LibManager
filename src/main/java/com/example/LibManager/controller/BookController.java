@@ -206,7 +206,13 @@ public class BookController {
                              BindingResult bindingResult,
                              @RequestParam("file") MultipartFile file) {
         if(bindingResult.hasErrors()) {
-            return "updateBookForm";
+            modelMap.addAttribute("categories", categoryRepository.findAll());
+            Book fBook = bookRepository.findById(bookID).get();
+            fBook.setAuthorID(getAuthorNameByID(fBook.getAuthorID()));
+            fBook.setPlCompanyID(getPlCompanyNameByID(fBook.getPlCompanyID()));
+            modelMap.addAttribute("book", fBook);
+            modelMap.addAttribute("bookDTO", new BookDTO());
+            return "updateBook";
         }else {
             try {
                 if(bookRepository.findById(bookID).isPresent()) {

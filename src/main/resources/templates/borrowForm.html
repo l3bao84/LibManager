@@ -110,14 +110,17 @@
                     <div class="form-group">
                         <label for="exampleInputEmail1">Tên khách hàng</label>
                         <input th:field="*{customerName}" type="text" class="form-control" id="exampleInputEmail1">
+                        <p class="error" th:errors="*{customerName}"></p>
                     </div>
                     <div class="form-group">
                         <label for="exampleInputPassword1">Số điện thoại</label>
                         <input th:field="*{phoneNumber}" type="text" class="form-control" id="exampleInputPassword1">
+                        <p class="error" th:errors="*{phoneNumber}"></p>
                     </div>
                     <div class="form-group">
                         <label for="exampleInputPassword1">Địa chỉ</label>
                         <input th:field="*{customerLocation}" type="text" class="form-control" id="exampleInputPassword1">
+                        <p class="error" th:errors="*{customerLocation}"></p>
                     </div>
                 <button type="submit" class="btn-resiger btn btn-primary">Đăng ký</button>
                 </form>

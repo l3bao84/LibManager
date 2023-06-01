@@ -1,7 +1,7 @@
 package com.example.LibManager.controller;
 
 import com.example.LibManager.models.Book;
-import com.example.LibManager.models.BookDTO;
+import com.example.LibManager.models.BookSearchDTO;
 import com.example.LibManager.models.Borrow;
 import com.example.LibManager.models.Customer;
 import com.example.LibManager.repositories.*;
@@ -59,11 +59,11 @@ public class CustomerController {
                               @PathVariable String bookID) {
         if(bindingResult.hasErrors()) {
             Book book = bookRepository.findById(bookID).get();
-            modelMap.addAttribute("author", authorRepository.findById(book.getAuthorID()).get());
-            modelMap.addAttribute("plc", plCompanyRepository.findById(book.getPlCompanyID()).get());
+            modelMap.addAttribute("author", authorRepository.findById(book.getAuthor().getAuthorID()).get());
+            modelMap.addAttribute("plc", plCompanyRepository.findById(book.getPlCompany().getPlCompanyID()).get());
             modelMap.addAttribute("book", book);
             modelMap.addAttribute("customer", new Customer());
-            modelMap.addAttribute("bookDTO", new BookDTO());
+            modelMap.addAttribute("bookDTO", new BookSearchDTO());
             return "borrowForm";
         }else {
             Borrow borrow = new Borrow("None");
@@ -78,11 +78,11 @@ public class CustomerController {
             customerRepository.save(customer);
 
             Book book = bookRepository.findById(bookID).get();
-            modelMap.addAttribute("author", authorRepository.findById(book.getAuthorID()).get());
-            modelMap.addAttribute("plc", plCompanyRepository.findById(book.getPlCompanyID()).get());
+            modelMap.addAttribute("author", authorRepository.findById(book.getAuthor().getAuthorID()).get());
+            modelMap.addAttribute("plc", plCompanyRepository.findById(book.getPlCompany().getPlCompanyID()).get());
             modelMap.addAttribute("book", book);
             modelMap.addAttribute("customer", customer);
-            modelMap.addAttribute("bookDTO", new BookDTO());
+            modelMap.addAttribute("bookDTO", new BookSearchDTO());
             return "borrowForm";
         }
     }

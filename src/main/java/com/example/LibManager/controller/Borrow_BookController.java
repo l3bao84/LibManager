@@ -5,7 +5,6 @@ import com.example.LibManager.repositories.*;
 import com.example.LibManager.services.LengthOfMonth;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.MediaType;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.validation.BindingResult;
@@ -93,18 +92,18 @@ public class Borrow_BookController {
         modelMap.addAttribute("sum", sum);
         modelMap.addAttribute("books", bookRepository.findAll());
         modelMap.addAttribute("bbs", bbRepository.findAll());
-        modelMap.addAttribute("bookDTO", new BookDTO());
+        modelMap.addAttribute("bookDTO", new BookSearchDTO());
         return "manageBook";
     }
 
     @RequestMapping(path = "/showBorrowForm/{bookID}", method = RequestMethod.GET)
     public String showBorrowForm(ModelMap modelMap, @PathVariable String bookID) {
         Book book = bookRepository.findById(bookID).get();
-        modelMap.addAttribute("author", authorRepository.findById(book.getAuthorID()).get());
-        modelMap.addAttribute("plc", plCompanyRepository.findById(book.getPlCompanyID()).get());
+        modelMap.addAttribute("author", authorRepository.findById(book.getAuthor().getAuthorID()).get());
+        modelMap.addAttribute("plc", plCompanyRepository.findById(book.getPlCompany().getPlCompanyID()).get());
         modelMap.addAttribute("book", book);
         modelMap.addAttribute("customer", new Customer());
-        modelMap.addAttribute("bookDTO", new BookDTO());
+        modelMap.addAttribute("bookDTO", new BookSearchDTO());
         return "borrowForm";
     }
 
@@ -122,7 +121,7 @@ public class Borrow_BookController {
         modelMap.addAttribute("sum", sum);
         modelMap.addAttribute("books", bookRepository.findAll());
         modelMap.addAttribute("bbs", bbRepository.findAll());
-        modelMap.addAttribute("bookDTO", new BookDTO());
+        modelMap.addAttribute("bookDTO", new BookSearchDTO());
         return "manageBook";
     }
 }

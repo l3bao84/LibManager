@@ -35,20 +35,10 @@ public class Book {
     @Min(0)
     private double bookPrice;
 
-    @Column(name = "authorID")
-    @NotEmpty(message = "Tên tác giả không được để trống")
-    @Size(min = 3, max = 300)
-    private String authorID;
-
     @Column(name = "releasedDay")
     @NotEmpty(message = "Vui lòng điền ngày phát hành")
     @Size(min = 3, max = 300)
     private String releasedDay;
-
-    @Column(name = "plCompanyID")
-    @NotEmpty(message = "Nhà xuất bản không được để trống")
-    @Size(min = 3, max = 300)
-    private String plCompanyID;
 
     @Column(name = "pageNumber")
     @Min(0)
@@ -56,14 +46,24 @@ public class Book {
 
     @Lob
     @Column(name = "imagePath", length = 1000)
-    //@NotEmpty(message = "Bạn chưa chọn file ảnh")
     private String imagePath;
-
-    @Column(name = "categoryID")
-    private String categoryID;
 
     @OneToMany(mappedBy = "book",fetch = FetchType.LAZY)
     @JsonManagedReference
     private Set<Borrow_Book> borrow_books;
 
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "authorID", nullable = false, referencedColumnName = "authorID")
+    @JsonManagedReference
+    private Author author;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "plCompanyID", nullable = false, referencedColumnName = "plCompanyID")
+    @JsonManagedReference
+    private PlCompany plCompany;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "categoryID", nullable = false, referencedColumnName = "categoryID")
+    @JsonManagedReference
+    private Category category;
 }

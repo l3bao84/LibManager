@@ -73,8 +73,8 @@
                     <div class="basic-infor">
                         <div class="detail-book-infor-name" th:text="${book.getBookName()}"></div>
                         <div class="detail-book-infor-price" th:text="${book.getBookPrice()}"></div>
-                        <div class="detail-book-infor-author" th:text="${'Tác giả: ' + author.getAuthorName()}"></div>
-                        <div class="detail-book-infor-plc" th:text="${'Nhà xuất bản: ' + plc.getPlCompanyName()}"></div>
+                        <div class="detail-book-infor-author" th:text="${'Tác giả: ' + book.getAuthor().getAuthorName()}"></div>
+                        <div class="detail-book-infor-plc" th:text="${'Nhà xuất bản: ' + book.getPlCompany().getPlCompanyName()}"></div>
                         <div class="detail-book-infor-pages" th:text="${'Số trang: ' + book.getPageNumber()}"></div>
                         <div class="detail-book-infor-rld" th:text="${'Ngày phát hành: ' + book.getReleasedDay()}"></div>
                         <div class="detail-book-infor_number">

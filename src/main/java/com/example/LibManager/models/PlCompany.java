@@ -1,7 +1,10 @@
 package com.example.LibManager.models;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import org.hibernate.annotations.GenericGenerator;
+
+import java.util.Set;
 
 @Entity
 @Table(name = "plCompany")
@@ -15,6 +18,10 @@ public class PlCompany {
 
     @Column(name = "plCompanyName")
     private String plCompanyName;
+
+    @OneToMany(mappedBy = "plCompany")
+    @JsonManagedReference
+    private Set<Book> books;
 
     public PlCompany() {
 
@@ -39,5 +46,13 @@ public class PlCompany {
 
     public void setPlCompanyName(String plCompanyName) {
         this.plCompanyName = plCompanyName;
+    }
+
+    public Set<Book> getBooks() {
+        return books;
+    }
+
+    public void setBooks(Set<Book> books) {
+        this.books = books;
     }
 }

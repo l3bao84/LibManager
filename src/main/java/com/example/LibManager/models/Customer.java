@@ -29,7 +29,7 @@ public class Customer {
     @NotEmpty(message = "Địa chỉ khách hàng không được để trống")
     private String customerLocation;
 
-    @OneToMany(mappedBy = "customer", cascade = CascadeType.ALL,fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "customer", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     @JsonManagedReference
     private Set<Borrow> borrows;
 

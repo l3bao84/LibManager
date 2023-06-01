@@ -72,14 +72,14 @@
                 <tbody th:each="book : ${books}">
                     <tr>
                       <td th:text="${book.getBookID()}"></td>
-                      <td th:text="${book.getCategoryID()}"></td>
+                      <td th:text="${book.getCategory().getCategoryID()}"></td>
                       <td>
                           <div class="book-name">
                               <a th:href="@{'/books/detailBook/' + ${book.getBookID()}}" th:text="${book.getBookName()}"></a>
                           </div>
                       </td>
-                      <td th:text="${book.getAuthorID()}"></td>
-                      <td th:text="${book.getPlCompanyID()}"></td>
+                      <td th:text="${book.getAuthor().getAuthorID()}"></td>
+                      <td th:text="${book.getPlCompany().getPlCompanyID()}"></td>
                       <td th:text="${book.getReleasedDay()}"></td>
                       <td>
                           <div class="act">

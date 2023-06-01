@@ -17,6 +17,6 @@ public class CustomerIDGenerator implements IdentifierGenerator {
         Stream<String> count = session.createQuery(query, String.class).stream();
 
         Long max = count.map(o -> o.replace(prefix, "")).mapToLong(Long::parseLong).max().orElse(0L);
-        return prefix +(String.format("%03d", max + 1));
+        return prefix + (String.format("%03d", max + 1));
     }
 }

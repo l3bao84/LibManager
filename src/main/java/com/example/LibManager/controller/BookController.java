@@ -4,7 +4,6 @@ import com.example.LibManager.models.*;
 import com.example.LibManager.repositories.*;
 import com.example.LibManager.services.StorageService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -16,7 +15,6 @@ import org.springframework.web.multipart.MultipartFile;
 
 import javax.validation.Valid;
 import java.io.IOException;
-import java.time.LocalDate;
 import java.util.ArrayList;
 
 @Controller
@@ -40,11 +38,9 @@ public class BookController {
     @GetMapping("/detailBook/{bookID}")
     public String getDetailBook(ModelMap modelMap, @PathVariable String bookID) {
         Book book = bookRepository.findById(bookID).get();
-        modelMap.addAttribute("author", authorRepository.findById(book.getAuthorID()).get());
-        modelMap.addAttribute("plc", plCompanyRepository.findById(book.getPlCompanyID()).get());
         modelMap.addAttribute("categories", categoryRepository.findAll());
         modelMap.addAttribute("book", book);
-        modelMap.addAttribute("bookDTO", new BookDTO());
+        modelMap.addAttribute("bookDTO", new BookSearchDTO());
         return "detailBook";
     }
 
@@ -55,7 +51,7 @@ public class BookController {
         modelMap.addAttribute("sum", Borrow_BookController.sum);
         modelMap.addAttribute("books", bookRepository.findAll());
         modelMap.addAttribute("bbs", bbs);
-        modelMap.addAttribute("bookDTO", new BookDTO());
+        modelMap.addAttribute("bookDTO", new BookSearchDTO());
         return "manageBook";
     }
 
@@ -73,7 +69,7 @@ public class BookController {
             modelMap.addAttribute("sum", Borrow_BookController.sum);
             modelMap.addAttribute("books", bookRepository.findAll());
             modelMap.addAttribute("bbs", bBRepository.findAll());
-            modelMap.addAttribute("bookDTO", new BookDTO());
+            modelMap.addAttribute("bookDTO", new BookSearchDTO());
             return "manageBook";
         }catch (Exception ex) {
             modelMap.addAttribute("error", ex.toString());
@@ -83,9 +79,9 @@ public class BookController {
 
     @GetMapping("/insertBook")
     public String insertBook(ModelMap modelMap) {
-        modelMap.addAttribute("book", new Book());
+        modelMap.addAttribute("book", new BookDTO());
         modelMap.addAttribute("categories", categoryRepository.findAll());
-        modelMap.addAttribute("bookDTO", new BookDTO());
+        modelMap.addAttribute("bookDTO", new BookSearchDTO());
         return "insertBook";
     }
 
@@ -143,39 +139,46 @@ public class BookController {
 
     @PostMapping("/insertBook")
     public String insertBook(ModelMap modelMap,
-                             @Valid @ModelAttribute("book") Book book,
+                             @Valid @ModelAttribute("book") BookDTO bookDTO,
                              BindingResult bindingResult,
                              @RequestParam("file") MultipartFile file) {
         if(bindingResult.hasErrors()) {
             modelMap.addAttribute("categories", categoryRepository.findAll());
-            modelMap.addAttribute("bookDTO", new BookDTO());
+            modelMap.addAttribute("bookDTO", new BookSearchDTO());
             return "insertBook";
         }else {
+            Book book = new Book();
             try {
-                if (getAuthorIDByName(book.getAuthorID()) == "") {
+                book.setBookName(bookDTO.getBookName());
+                book.setBookPrice(bookDTO.getBookPrice());
+                book.setPageNumber(bookDTO.getPageNumber());
+                book.setReleasedDay(bookDTO.getReleasedDay());
+                book.setImagePath(service.uploadFileToFileSystem(file));
+                book.setCategory(categoryRepository.findById(bookDTO.getCategoryID()).get());
+                if (getAuthorIDByName(bookDTO.getAuthorID()) == "") {
                     Author author = new Author();
-                    author.setAuthorName(book.getAuthorID());
+                    author.setAuthorName(bookDTO.getAuthorID());
                     authorRepository.save(author);
-                    book.setAuthorID(author.getAuthorID());
+                    book.setAuthor(author);
                 } else {
-                    book.setAuthorID(getAuthorIDByName(book.getAuthorID()));
+                    book.setAuthor(authorRepository.findByAuthorName(bookDTO.getAuthorID()).get());
                 }
-                if (getPlCompanyIDByName(book.getPlCompanyID()) == "") {
+                if (getPlCompanyIDByName(bookDTO.getPlCompanyID()) == "") {
                     PlCompany plCompany = new PlCompany();
-                    plCompany.setPlCompanyName(book.getPlCompanyID());
+                    plCompany.setPlCompanyName(bookDTO.getPlCompanyID());
                     plCompanyRepository.save(plCompany);
-                    book.setPlCompanyID(plCompany.getPlCompanyID());
-                    book.setImagePath(service.uploadFileToFileSystem(file));
+                    book.setPlCompany(plCompany);
                     bookRepository.save(book);
                 } else {
-                    book.setPlCompanyID(getPlCompanyIDByName(book.getPlCompanyID()));
+                    //.setPlCompanyID(getPlCompanyIDByName(book.getPlCompanyID()));
+                    book.setPlCompany(plCompanyRepository.findByPlCompanyName(bookDTO.getPlCompanyID()).get());
                 }
-                book.setImagePath(service.uploadFileToFileSystem(file));
+                //book.setImagePath(service.uploadFileToFileSystem(file));
                 bookRepository.save(book);
                 modelMap.addAttribute("sum", Borrow_BookController.sum);
                 modelMap.addAttribute("books", bookRepository.findAll());
                 modelMap.addAttribute("bbs", bBRepository.findAll());
-                modelMap.addAttribute("bookDTO", new BookDTO());
+                modelMap.addAttribute("bookDTO", new BookSearchDTO());
                 return "manageBook";
             } catch (Exception ex) {
                 modelMap.addAttribute("error", ex.toString());
@@ -189,10 +192,18 @@ public class BookController {
     public String updateBook(ModelMap modelMap, @PathVariable String bookID) {
         modelMap.addAttribute("categories", categoryRepository.findAll());
         Book book = bookRepository.findById(bookID).get();
-        book.setAuthorID(getAuthorNameByID(book.getAuthorID()));
-        book.setPlCompanyID(getPlCompanyNameByID(book.getPlCompanyID()));
-        modelMap.addAttribute("book", book);
-        modelMap.addAttribute("bookDTO", new BookDTO());
+        BookDTO bookDTO = BookDTO.builder()
+                .bookID(book.getBookID())
+                .bookName(book.getBookName())
+                .bookPrice(book.getBookPrice())
+                .pageNumber(book.getPageNumber())
+                .authorID(book.getAuthor().getAuthorName())
+                .plCompanyID(book.getPlCompany().getPlCompanyName())
+                .releasedDay(book.getReleasedDay())
+                .categoryID(book.getCategory().getCategoryID())
+                .build();
+        modelMap.addAttribute("book", bookDTO);
+        modelMap.addAttribute("bookDTO", new BookSearchDTO());
         return "updateBook";
     }
 
@@ -200,35 +211,34 @@ public class BookController {
     @PostMapping("/updateBook/{bookID}")
     public String updateBook(ModelMap modelMap,
                              @PathVariable String bookID,
-                             @Valid @ModelAttribute("book") Book book,
+                             @Valid @ModelAttribute("book") BookDTO bookDTO,
                              BindingResult bindingResult,
                              @RequestParam("file") MultipartFile file) {
         if(bindingResult.hasErrors()) {
             modelMap.addAttribute("categories", categoryRepository.findAll());
             Book fBook = bookRepository.findById(bookID).get();
-            fBook.setAuthorID(getAuthorNameByID(fBook.getAuthorID()));
-            fBook.setPlCompanyID(getPlCompanyNameByID(fBook.getPlCompanyID()));
+            //fBook.setAuthorID(getAuthorNameByID(fBook.getAuthorID()));
+            //fBook.setPlCompanyID(getPlCompanyNameByID(fBook.getPlCompanyID()));
             modelMap.addAttribute("book", fBook);
-            modelMap.addAttribute("bookDTO", new BookDTO());
+            modelMap.addAttribute("bookDTO", new BookSearchDTO());
             return "updateBook";
         }else {
             try {
                 if(bookRepository.findById(bookID).isPresent()) {
                     Book foundBook = bookRepository.findById(bookID).get();
 
-                    foundBook.setBookName(book.getBookName());
-                    foundBook.setBookPrice(book.getBookPrice());
-                    foundBook.setPageNumber(book.getPageNumber());
-                    foundBook.setReleasedDay(book.getReleasedDay());
-                    book.setImagePath(service.uploadFileToFileSystem(file));
-                    foundBook.setImagePath(book.getImagePath());
-                    foundBook.setCategoryID(book.getCategoryID());
-                    foundBook.setAuthorID(getAuthorIDByName(book.getAuthorID()));
-                    foundBook.setPlCompanyID(getPlCompanyIDByName(book.getPlCompanyID()));
+                    foundBook.setBookName(bookDTO.getBookName());
+                    foundBook.setBookPrice(bookDTO.getBookPrice());
+                    foundBook.setPageNumber(bookDTO.getPageNumber());
+                    foundBook.setReleasedDay(bookDTO.getReleasedDay());
+                    foundBook.setImagePath(service.uploadFileToFileSystem(file));
+                    foundBook.setCategory(categoryRepository.findById(bookDTO.getCategoryID()).get());
+                    foundBook.setAuthor(authorRepository.findByAuthorName(bookDTO.getAuthorID()).get());
+                    foundBook.setPlCompany(plCompanyRepository.findByPlCompanyName(bookDTO.getPlCompanyID()).get());
                     bookRepository.save(foundBook);
                     modelMap.addAttribute("sum", Borrow_BookController.sum);
                     modelMap.addAttribute("books", bookRepository.findAll());
-                    modelMap.addAttribute("bookDTO", new BookDTO());
+                    modelMap.addAttribute("bookDTO", new BookSearchDTO());
                     return "manageBook";
                 }
             }catch (Exception ex) {
@@ -239,24 +249,24 @@ public class BookController {
         modelMap.addAttribute("sum", Borrow_BookController.sum);
         modelMap.addAttribute("books", bookRepository.findAll());
         modelMap.addAttribute("bbs", bBRepository.findAll());
-        modelMap.addAttribute("bookDTO", new BookDTO());
+        modelMap.addAttribute("bookDTO", new BookSearchDTO());
         return "manageBook";
     }
 
     @GetMapping("/getBooksByCategoryID/{categoryID}")
     public String getBooksByCategoryID(ModelMap modelMap, @PathVariable String categoryID) {
-        ArrayList<Book> books = (ArrayList<Book>) bookRepository.findByCategoryID(categoryID);
+        ArrayList<Book> books = (ArrayList<Book>) bookRepository.findByCategory(categoryRepository.findById(categoryID).get());
         if(!books.isEmpty()) {
             modelMap.addAttribute("category", categoryRepository.findById(categoryID).get());
             modelMap.addAttribute("books", books);
             modelMap.addAttribute("hasData", true);
-            modelMap.addAttribute("bookDTO", new BookDTO());
+            modelMap.addAttribute("bookDTO", new BookSearchDTO());
             return "bookOnCat";
         }
         modelMap.addAttribute("category", categoryRepository.findById(categoryID).get());
         modelMap.addAttribute("books", books);
         modelMap.addAttribute("hasData", false);
-        modelMap.addAttribute("bookDTO", new BookDTO());
+        modelMap.addAttribute("bookDTO", new BookSearchDTO());
         return "bookOnCat";
     }
 

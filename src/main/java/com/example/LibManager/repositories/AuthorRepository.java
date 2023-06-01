@@ -8,4 +8,6 @@ import java.util.Optional;
 public interface AuthorRepository extends CrudRepository<Author, String> {
     @Override
     Optional<Author> findById(String s);
+
+    Optional<Author> findByAuthorName(String name);
 }
